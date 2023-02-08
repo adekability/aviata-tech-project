@@ -1,2 +1,6 @@
 env/
 .idea/
+project/__pycache__/
+project/airflow/__pycache__/
+project/provider_a/__pycache__/
+project/provider_b/__pycache__/
