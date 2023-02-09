@@ -1,6 +1,13 @@
-from project import init_app
+from fastapi import FastAPI
+from routers import provider_a, provider_b, airflow
+import uvicorn
 
-app = init_app()
+app = FastAPI()
+
+
+app.include_router(provider_a.router)
+app.include_router(provider_b.router)
+app.include_router(airflow.router)
 
 if __name__ == '__main__':
-    app.run(port=9000)
+    uvicorn.run(app, port=9000)

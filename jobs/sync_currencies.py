@@ -2,7 +2,7 @@ from datetime import datetime
 import requests
 import xml.etree.ElementTree as ET
 from models import CurrencyRate
-from extensions import db
+from extensions import db_session
 from calendar import monthrange
 
 
@@ -37,8 +37,8 @@ class SyncCurrency:
                             currency_rate.title = cur.text
                         case 'description':
                             currency_rate.description = cur.text
-                db.session.add(currency_rate)
-        db.session.commit()
+                db_session.add(currency_rate)
+        db_session.commit()
         return
 
     @staticmethod

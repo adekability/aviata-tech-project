@@ -1,15 +1,19 @@
-from flask import Blueprint
-import time
+from fastapi import APIRouter
 import json
+import time
 
-provider_b_bp = Blueprint(
-    "provider_b", __name__
+
+router = APIRouter(
+    prefix="/provider_b",
+    tags=["provider_b"],
+    responses={404: {"description": "Not found"}},
 )
 
 
-@provider_b_bp.route("/search", methods=["POST"])
-def search_by_provider_b():
+@router.post("/search")
+async def search_by_provider_b():
     time.sleep(60)
-    provider_b_text = open("./files/response_b.json")
+    provider_b_text = open("./files/response_a.json")
     provider_b_data = json.load(provider_b_text)
+
     return provider_b_data

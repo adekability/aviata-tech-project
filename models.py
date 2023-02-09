@@ -1,16 +1,19 @@
-from extensions import db
 from extensions import Base
-from sqlalchemy.dialects.postgresql import JSON
 from uuid import uuid4
+from sqlalchemy import *
+from sqlalchemy.dialects.postgresql import DOUBLE_PRECISION, JSON
 
 
-class CurrencyRate(db.Model, Base):
+class CurrencyRate(Base):
     __tablename__ = "currency_rates"
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    fullname = db.Column(db.String)
-    title = db.Column(db.String)
-    description = db.Column(db.Float)
-    date = db.Column(db.DateTime)
+
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    created_at = Column(DateTime, default='now()')
+    updated_at = Column(DateTime, onupdate='now()')
+    fullname = Column(String)
+    title = Column(String)
+    description = Column(DOUBLE_PRECISION)
+    date = Column(DateTime)
 
     def __init__(self, fullname=None, title=None, description=None, date=None):
         self.fullname = fullname
@@ -26,12 +29,16 @@ class CurrencyRate(db.Model, Base):
                     description=self.description)
 
 
-class SearchResult(db.Model, Base):
+class SearchResult(Base):
     __tablename__ = 'search_results'
-    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    search_id = db.Column(db.String)
-    status = db.Column(db.String)
-    items = db.Column(JSON)
+
+    id = Column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    created_at = Column(DateTime, default='now()')
+    updated_at = Column(DateTime, onupdate='now()')
+
+    search_id = Column(String)
+    status = Column(String)
+    items = Column(JSON)
 
     def __init__(self, search_id=None, status=None, items=None):
         self.search_id = search_id if search_id else str(uuid4())
