@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  redis:
+    container_name: redis
+    image: redis:5.0.5
+    hostname: redis
+    environment:
+      - TZ=Asia/Almaty
+    ports:
+      - "127.0.0.1:6379:6379"
+    env_file:
+      - .env
+
+  worker:
+    restart: always
+    container_name: worker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "celery -A background_jobs.taskmaster worker -l INFO -P eventlet"
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+    env_file:
+      - .env
+    environment:
+      - TZ=Asia/Almaty
+
+  beat:
+    restart: always
+    container_name: celery_beat
+    build:
+      context: .
+    command: "celery -A background_jobs.scheduler beat -l INFO"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - worker
+      - redis
+    environment:
+      - TZ=Asia/Almaty
