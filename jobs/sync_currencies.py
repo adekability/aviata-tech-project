@@ -42,9 +42,10 @@ class SyncCurrency:
         return
 
     @staticmethod
-    def all_dates_in_year(year=2019):
+    def all_dates_in_year(year=datetime.now().year):
         for month in range(1, 13):
             for day in range(1, monthrange(year, month)[1] + 1):
+                if datetime(year, month, day) > datetime.now(): continue
                 yield year, month, day
 
     @staticmethod
