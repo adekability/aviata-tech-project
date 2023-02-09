@@ -8,11 +8,13 @@ class CurrencyRate(db.Model, Base):
     fullname = db.Column(db.String)
     title = db.Column(db.String)
     description = db.Column(db.Float)
+    date = db.Column(db.DateTime)
 
-    def __init__(self, fullname, title, description):
+    def __init__(self, fullname=None, title=None, description=None, date=None):
         self.fullname = fullname
         self.title = title
         self.description = description
+        self.date = date
 
     @property
     def serialize(self):
