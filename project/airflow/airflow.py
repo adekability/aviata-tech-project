@@ -1,5 +1,5 @@
 from flask import Blueprint
-from uuid import uuid4
+from models import SearchResult
 import requests
 
 
@@ -10,7 +10,7 @@ airflow_bp = Blueprint(
 
 @airflow_bp.route("/search", methods=["POST"])
 def search_by_airflow():
-    search_id = str(uuid4())
+    search_result = SearchResult()
     provider_a_data = requests.post("http://localhost:8000/provider_a/search")
     provider_b_data = requests.post("http://localhost:8000/provider_b/search")
-    return {"search_id": search_id}
+    return {"search_id": search_result.search_id}
