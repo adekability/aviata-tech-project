@@ -1,9 +1,13 @@
 from flask import Flask
+from extensions import db
+import config as cfg
 
 
 def init_app():
     app = Flask(__name__, instance_relative_config=False)
-
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = cfg.SQLALCHEMY_DATABASE_URI
+    db.init_app(app)
     with app.app_context():
         from .provider_a import provider_a
         from .provider_b import provider_b
