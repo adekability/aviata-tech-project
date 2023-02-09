@@ -7,3 +7,6 @@ project/provider_b/__pycache__/
 tests/
 .env
 __pycache__/
+celerybeat-schedule.dir
+celerybeat-schedule.bak
+celerybeat-schedule.dat
