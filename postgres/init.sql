@@ -13,8 +13,3 @@ CREATE TABLE search_results(id SERIAL PRIMARY KEY,
                             search_id varchar,
                             status varchar,
                             items json);
-
-
-ALTER TABLE table_name ADD COLUMN id SERIAL PRIMARY KEY;
-ALTER TABLE table_name ADD COLUMN created_at timestamp DEFAULT NOW();
-ALTER TABLE table_name ADD COLUMN updated_at timestamp DEFAULT NOW();

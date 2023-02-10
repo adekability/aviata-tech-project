@@ -10,3 +10,4 @@ __pycache__/
 celerybeat-schedule.dir
 celerybeat-schedule.bak
 celerybeat-schedule.dat
+postgres/data/

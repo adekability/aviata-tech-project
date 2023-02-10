@@ -19,6 +19,9 @@ services:
       - "5433:5432"
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
 
   redis:
     container_name: redis
@@ -83,3 +86,11 @@ services:
       - worker
     environment:
       - TZ=Asia/Almaty
+
+  autoheal:
+    restart: always
+    image: willfarrell/autoheal
+    environment:
+      - AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
