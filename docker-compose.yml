@@ -6,6 +6,7 @@ services:
     container_name: pg_container
     restart: unless-stopped
     volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
       - ./postgres/.psqlrc:/root/.psqlrc:ro
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/dumps:/dumps
@@ -16,6 +17,8 @@ services:
       POSTGRES_DB: aviata
     ports:
       - "5433:5432"
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
 
   redis:
     container_name: redis
@@ -27,6 +30,11 @@ services:
       - "127.0.0.1:6379:6379"
     env_file:
       - .env
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 50
 
   web:
     build:
@@ -52,8 +60,10 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - redis
-      - postgres
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     environment:
