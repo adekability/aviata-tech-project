@@ -1,16 +1,21 @@
 version: '3.4'
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  postgres:
+    image: postgres:15
+    container_name: pg_container
+    restart: unless-stopped
+    volumes:
+      - ./postgres/.psqlrc:/root/.psqlrc:ro
+      - ./postgres/data:/var/lib/postgresql/data
+      - ./postgres/dumps:/dumps
+      - ./postgres/log:/root/log:cached
+    environment:
+      POSTGRES_PASSWORD: asdjnjsd0SAD
+      POSTGRES_USER: postgres
+      POSTGRES_DB: aviata
     ports:
-      - "9000:9000"
-    volumes: ['./:/files']
-    env_file:
-      - .env
-    restart: always
+      - "5433:5432"
 
   redis:
     container_name: redis
@@ -23,6 +28,21 @@ services:
     env_file:
       - .env
 
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes: ['./:/files']
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - redis
+      - postgres
+
+
   worker:
     restart: always
     container_name: worker
@@ -33,6 +53,7 @@ services:
       - .:/app
     depends_on:
       - redis
+      - postgres
     env_file:
       - .env
     environment:
@@ -50,6 +71,5 @@ services:
       - .env
     depends_on:
       - worker
-      - redis
     environment:
       - TZ=Asia/Almaty
