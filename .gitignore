@@ -5,7 +5,6 @@ project/airflow/__pycache__/
 project/provider_a/__pycache__/
 project/provider_b/__pycache__/
 tests/
-.env
 __pycache__/
 celerybeat-schedule.dir
 celerybeat-schedule.bak
