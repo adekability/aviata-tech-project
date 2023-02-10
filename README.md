@@ -8,6 +8,7 @@
 `docker-compose up -d --build`
 
 Чтобы посмотреть логи контейнера используйте следующую команду:
+
 `docker-compose logs -f`
 
 Документация микросервиса доступна по адресу http://localhost:9000/docs
